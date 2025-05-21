@@ -3,8 +3,8 @@ default:
     just -l -u
 
 # Run the program
-run:
-    go run .
+run *OPTS:
+    go run . {{OPTS}}
 
 # Build the project for Linux and Windows
 build:
