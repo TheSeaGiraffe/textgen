@@ -1,2 +1,5 @@
+# Ignore bin directory
+bin/
+
 # Ignore out directory
 out*/

@@ -8,13 +8,13 @@ run *OPTS:
 
 # Build the project for Linux and Windows
 build:
-	GOOS=linux go build -o omp_fs_api .
-	GOOS=windows go build -o omp_fs_api.exe .
+	GOOS=linux go build -o textgen .
+	GOOS=windows go build -o textgen.exe .
 
 # Build the project for Linux and Windows and put the binaries in the bin directory
 build_bin:
-	GOOS=linux go build -o bin/omp_fs_api .
-	GOOS=windows go build -o bin/omp_fs_api.exe .
+	GOOS=linux go build -o bin/textgen .
+	GOOS=windows go build -o bin/textgen.exe .
 
 # Run all tests
 test:
