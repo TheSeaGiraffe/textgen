@@ -15,3 +15,7 @@ build:
 build_bin:
 	GOOS=linux go build -o bin/omp_fs_api .
 	GOOS=windows go build -o bin/omp_fs_api.exe .
+
+# Run all tests
+test:
+    go test -v ./...
