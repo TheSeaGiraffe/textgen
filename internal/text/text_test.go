@@ -130,8 +130,9 @@ func TestTextGenDummyFiles(t *testing.T) {
 	defer os.RemoveAll(dir)
 
 	// Run the tests
-	t.Run("Testing files", testGenDummyFiles_Files(dir))
 	t.Run("Testing directories", testGenDummyFiles_Directories(dir))
+	t.Run("Testing file name", testGenDummyFiles_FilesName(dir))
+	t.Run("Testing number of generated files", testGenDummyFiles_FilesNum(dir))
 }
 
 func testGenDummyFiles_Directories(tempDirPath string) func(t *testing.T) {
@@ -194,7 +195,33 @@ func testGenDummyFiles_Directories(tempDirPath string) func(t *testing.T) {
 	}
 }
 
-func testGenDummyFiles_Files(tempDirPath string) func(t *testing.T) {
+func testGenDummyFiles_FilesName(tempDirPath string) func(t *testing.T) {
+	return func(t *testing.T) {
+		testDir := filepath.Join(tempDirPath, "test_files-name")
+		err := os.Mkdir(testDir, 0755)
+		if err != nil {
+			t.Fatalf("Could not create temp directory: %s", err)
+		}
+		defer os.RemoveAll(testDir)
+
+		err = GenDummyFiles(1, 1, testDir)
+		if err != nil {
+			t.Fatalf("GenDummyFiles ran into an error: %v", err)
+		}
+
+		files, err := os.ReadDir(testDir)
+		if err != nil {
+			t.Fatalf("Problem reading files in '%s': %v", testDir, err)
+		}
+
+		got := files[0].Name()
+		if !strings.Contains(got, "dummy") {
+			t.Errorf("Got file with name '%s', want 'dummy' in file name", got)
+		}
+	}
+}
+
+func testGenDummyFiles_FilesNum(tempDirPath string) func(t *testing.T) {
 	return func(t *testing.T) {
 		type args struct {
 			numFiles int
@@ -209,7 +236,7 @@ func testGenDummyFiles_Files(tempDirPath string) func(t *testing.T) {
 		}
 
 		for i, tt := range tests {
-			testDirName := fmt.Sprintf("test_files%d", i+1)
+			testDirName := fmt.Sprintf("test_files-num%d", i+1)
 			testDir := filepath.Join(tempDirPath, testDirName)
 			err := os.Mkdir(testDir, 0755)
 			if err != nil {
